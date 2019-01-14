@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SchStdGroupViewDlg" widgetVar="SchStdGroupViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewSchStdGroupTitle}" closeOnEscape="true">
+
+            <h:form id="SchStdGroupViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{schStdGroupController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewSchStdGroupLabel_groupId}"/>
+                        <h:outputText value="#{schStdGroupController.selected.groupId}" title="#{myBundle.ViewSchStdGroupTitle_groupId}"/>
+
+                        <h:outputText value="#{myBundle.ViewSchStdGroupLabel_groupName}"/>
+                        <h:outputText value="#{schStdGroupController.selected.groupName}" title="#{myBundle.ViewSchStdGroupTitle_groupName}"/>
+
+                        <h:outputText value="#{myBundle.ViewSchStdGroupLabel_groupStatus}"/>
+                        <p:selectBooleanCheckbox id="groupStatus" value="#{schStdGroupController.selected.groupStatus}" title="#{myBundle.EditSchStdGroupTitle_groupStatus}" required="true" requiredMessage="#{myBundle.EditSchStdGroupRequiredMessage_groupStatus}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('SchStdGroupViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

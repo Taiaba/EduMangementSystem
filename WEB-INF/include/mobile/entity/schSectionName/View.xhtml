@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="SchSectionNameViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewSchSectionNameTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:SchSectionNameListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="SchSectionNameViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{schSectionNameController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewSchSectionNameLabel_sectionId}"/>
+                            <h:outputText value="#{schSectionNameController.selected.sectionId}" title="#{myBundle.ViewSchSectionNameTitle_sectionId}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewSchSectionNameLabel_sectionName}"/>
+                            <h:outputText value="#{schSectionNameController.selected.sectionName}" title="#{myBundle.ViewSchSectionNameTitle_sectionName}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewSchSectionNameLabel_schAcademicYear}"/>
+                            <h:outputText value="#{schSectionNameController.selected.schAcademicYear.schSectionNameCollection}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewSchSectionNameLabel_schClassName}"/>
+                            <h:outputText value="#{schSectionNameController.selected.schClassName.className}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

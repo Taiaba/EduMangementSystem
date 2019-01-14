@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SchAcademicYearEditDlg" widgetVar="SchAcademicYearEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditSchAcademicYearTitle}" closeOnEscape="true">
+
+            <h:form id="SchAcademicYearEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{schAcademicYearController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditSchAcademicYearLabel_acyid}" for="acyid" />
+                        <h:outputText id="acyid" value="#{schAcademicYearController.selected.acyid}" />
+
+                        <p:outputLabel value="#{myBundle.EditSchAcademicYearLabel_acyear}" for="acyear" />
+                        <p:inputText id="acyear" value="#{schAcademicYearController.selected.acyear}" title="#{myBundle.EditSchAcademicYearTitle_acyear}" required="true" requiredMessage="#{myBundle.EditSchAcademicYearRequiredMessage_acyear}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditSchAcademicYearLabel_noOfExam}" for="noOfExam" />
+                        <p:inputText id="noOfExam" value="#{schAcademicYearController.selected.noOfExam}" title="#{myBundle.EditSchAcademicYearTitle_noOfExam}" required="true" requiredMessage="#{myBundle.EditSchAcademicYearRequiredMessage_noOfExam}"/>
+
+                        <p:outputLabel value="#{myBundle.EditSchAcademicYearLabel_isclosed}" for="isclosed" />
+                        <p:selectBooleanCheckbox id="isclosed" value="#{schAcademicYearController.selected.isclosed}" required="true" requiredMessage="#{myBundle.EditSchAcademicYearRequiredMessage_isclosed}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{schAcademicYearController.save}" value="#{myBundle.Save}" update="display,:SchAcademicYearListForm:datalist,:SchAcademicYearListForm:SchAcademicYearDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SchAcademicYearEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('SchAcademicYearEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

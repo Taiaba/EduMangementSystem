@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="SchSectionNameCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateSchSectionNameTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:SchSectionNameListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="SchSectionNameCreateForm">
+
+                <h:panelGroup id="display" rendered="#{schSectionNameController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateSchSectionNameLabel_sectionName}" for="sectionName" />
+                            <p:inputText id="sectionName" value="#{schSectionNameController.selected.sectionName}" title="#{myBundle.CreateSchSectionNameTitle_sectionName}" required="true" requiredMessage="#{myBundle.CreateSchSectionNameRequiredMessage_sectionName}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateSchSectionNameLabel_schAcademicYear}" for="schAcademicYear" />
+                            <p:selectOneMenu id="schAcademicYear" value="#{schSectionNameController.selected.schAcademicYear}" required="true" requiredMessage="#{myBundle.CreateSchSectionNameRequiredMessage_schAcademicYear}" converter="schAcademicYearConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{schAcademicYearController.items}"
+                                               var="schAcademicYearItem"
+                                               itemValue="#{schAcademicYearItem}"
+                                               itemLabel="#{schAcademicYearItem.schSectionNameCollection.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateSchSectionNameLabel_schClassName}" for="schClassName" />
+                            <p:selectOneMenu id="schClassName" value="#{schSectionNameController.selected.schClassName}" required="true" requiredMessage="#{myBundle.CreateSchSectionNameRequiredMessage_schClassName}" converter="schClassNameConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{schClassNameController.items}"
+                                               var="schClassNameItem"
+                                               itemValue="#{schClassNameItem}"
+                                               itemLabel="#{schClassNameItem.className.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{schSectionNameController.saveNew}" value="#{myBundle.Save}" update="display,:SchSectionNameListPage:SchSectionNameListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:SchSectionNameListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

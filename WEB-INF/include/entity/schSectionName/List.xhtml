@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="SchSectionNameListForm">
+
+        <p:panel header="#{myBundle.ListSchSectionNameTitle}">
+            <p:contextMenu id="SchSectionNameDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('SchSectionNameListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('SchSectionNameListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('SchSectionNameListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('SchSectionNameListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.SchSectionNameMenuItem_schAcademicYear}" icon="ui-icon-search"  actionListener="#{schSectionNameController.prepareSchAcademicYear}" update=":SchAcademicYearViewForm" oncomplete="PF('SchAcademicYearViewDialog').show()" disabled="#{empty schSectionNameController.selected.schAcademicYear}"/>  
+                <p:menuitem value="#{myBundle.SchSectionNameMenuItem_schClassName}" icon="ui-icon-search"  actionListener="#{schSectionNameController.prepareSchClassName}" update=":SchClassNameViewForm" oncomplete="PF('SchClassNameViewDialog').show()" disabled="#{empty schSectionNameController.selected.schClassName}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{schSectionNameController.items}"
+                         lazy="false"
+                         rowKey="#{item.sectionId}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{schSectionNameController.selected}"
+                         filteredValue="#{schSectionNameController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{schSectionNameController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.sectionId}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SchSectionNameDataTableContextMenu" listener="#{schSectionNameController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SchSectionNameDataTableContextMenu" listener="#{schSectionNameController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{schSectionNameController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('SchSectionNameListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.sectionId}" filterBy="#{item.sectionId}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchSectionNameTitle_sectionId}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sectionId}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.sectionName}" filterBy="#{item.sectionName}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchSectionNameTitle_sectionName}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sectionName}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.schAcademicYear.schSectionNameCollection}" filterBy="#{item.schAcademicYear.schSectionNameCollection}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchSectionNameTitle_schAcademicYear}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.schAcademicYear.schSectionNameCollection}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.schClassName.className}" filterBy="#{item.schClassName.className}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchSectionNameTitle_schClassName}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.schClassName.className}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{schSectionNameController.prepareCreate}" update=":SchSectionNameCreateForm" oncomplete="PF('SchSectionNameCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":SchSectionNameViewForm" oncomplete="PF('SchSectionNameViewDialog').show()" disabled="#{empty schSectionNameController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":SchSectionNameEditForm" oncomplete="PF('SchSectionNameEditDialog').show()" disabled="#{empty schSectionNameController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{schSectionNameController.delete}" update=":growl,datalist" disabled="#{empty schSectionNameController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

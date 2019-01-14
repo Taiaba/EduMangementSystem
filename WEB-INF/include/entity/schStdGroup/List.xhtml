@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="SchStdGroupListForm">
+
+        <p:panel header="#{myBundle.ListSchStdGroupTitle}">
+            <p:contextMenu id="SchStdGroupDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('SchStdGroupListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('SchStdGroupListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('SchStdGroupListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('SchStdGroupListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{schStdGroupController.items}"
+                         lazy="false"
+                         rowKey="#{item.groupId}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{schStdGroupController.selected}"
+                         filteredValue="#{schStdGroupController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{schStdGroupController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.groupId}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SchStdGroupDataTableContextMenu"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:SchStdGroupDataTableContextMenu"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('SchStdGroupListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.groupId}" filterBy="#{item.groupId}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchStdGroupTitle_groupId}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.groupId}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.groupName}" filterBy="#{item.groupName}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchStdGroupTitle_groupName}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.groupName}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.groupStatus}" filterBy="#{item.groupStatus}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchStdGroupTitle_groupStatus}"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox id="groupStatus" value="#{item.groupStatus}" title="#{myBundle.EditSchStdGroupTitle_groupStatus}" required="true" requiredMessage="#{myBundle.EditSchStdGroupRequiredMessage_groupStatus}" disabled="true"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{schStdGroupController.prepareCreate}" update=":SchStdGroupCreateForm" oncomplete="PF('SchStdGroupCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":SchStdGroupViewForm" oncomplete="PF('SchStdGroupViewDialog').show()" disabled="#{empty schStdGroupController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":SchStdGroupEditForm" oncomplete="PF('SchStdGroupEditDialog').show()" disabled="#{empty schStdGroupController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{schStdGroupController.delete}" update=":growl,datalist" disabled="#{empty schStdGroupController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

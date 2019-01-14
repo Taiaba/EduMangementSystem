@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SchStdGroupEditDlg" widgetVar="SchStdGroupEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditSchStdGroupTitle}" closeOnEscape="true">
+
+            <h:form id="SchStdGroupEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{schStdGroupController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditSchStdGroupLabel_groupId}" for="groupId" />
+                        <h:outputText id="groupId" value="#{schStdGroupController.selected.groupId}" />
+
+                        <p:outputLabel value="#{myBundle.EditSchStdGroupLabel_groupName}" for="groupName" />
+                        <p:inputText id="groupName" value="#{schStdGroupController.selected.groupName}" title="#{myBundle.EditSchStdGroupTitle_groupName}" required="true" requiredMessage="#{myBundle.EditSchStdGroupRequiredMessage_groupName}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditSchStdGroupLabel_groupStatus}" for="groupStatus" />
+                        <p:selectBooleanCheckbox id="groupStatus" value="#{schStdGroupController.selected.groupStatus}" required="true" requiredMessage="#{myBundle.EditSchStdGroupRequiredMessage_groupStatus}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{schStdGroupController.save}" value="#{myBundle.Save}" update="display,:SchStdGroupListForm:datalist,:SchStdGroupListForm:SchStdGroupDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SchStdGroupEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('SchStdGroupEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

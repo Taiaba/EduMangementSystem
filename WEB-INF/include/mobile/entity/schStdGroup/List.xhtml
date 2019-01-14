@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="SchStdGroupListPage">
+        <pm:header title="#{myBundle.ListSchStdGroupTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":SchStdGroupCreatePage:SchStdGroupCreateForm" actionListener="#{schStdGroupController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:SchStdGroupCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="SchStdGroupListForm">
+
+                <p:dataList id="datalist"
+                            paginator="true"
+                            rows="10"
+                            rowsPerPageTemplate="10,20,30,40,50"
+                            pt:data-inset="true"
+                            value="#{schStdGroupController.items}"
+                            var="item">
+
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListSchStdGroupTitle}"/>
+                    </f:facet>
+
+                    <p:commandLink update=":SchStdGroupEditPage:SchStdGroupEditForm" action="pm:SchStdGroupEditPage">
+                        <p>
+
+
+
+                            <h:outputText value="#{item.groupId}"/>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.groupName}"/>
+
+
+
+                            ,&nbsp;
+                            <h:selectBooleanCheckbox id="groupStatus" value="#{item.groupStatus}" title="#{myBundle.EditSchStdGroupTitle_groupStatus}" required="true" requiredMessage="#{myBundle.EditSchStdGroupRequiredMessage_groupStatus}" disabled="true"/>
+
+                        </p>
+                        <f:setPropertyActionListener value="#{item}" target="#{schStdGroupController.selected}" />
+                    </p:commandLink>
+
+                    <f:facet name="footer">
+                        <h:outputText value="#{myBundle.ListSchStdGroupTitle}"/>
+                    </f:facet>
+
+                </p:dataList>
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>
